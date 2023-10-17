@@ -537,14 +537,14 @@ def engine_profile_card():
 
 
 def get_version_from_filename(name):
-    if "v1-" in name:
-        return "1.5"
-    elif "v2-" in name:
-        return "2.1"
-    elif "xl" in name:
-        return "xl-1.0"
-    else:
-        return "Unknown"
+    if name is not None:
+        if "v1-" in name:
+            return "1.5"
+        elif "v2-" in name:
+            return "2.1"
+        elif "xl" in name:
+            return "xl-1.0"
+    return "Unknown"
 
 
 def get_lora_checkpoints():
