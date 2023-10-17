@@ -557,10 +557,14 @@ def get_lora_checkpoints():
     )
     for filename in canditates:
         name = os.path.splitext(os.path.basename(filename))[0]
-        metadata = sd_models.read_metadata_from_safetensors(filename)
+        try:
+            metadata = sd_models.read_metadata_from_safetensors(filename)
+            version = get_version_from_filename(metadata.get("ss_sd_model_name"))
+        except (AssertionError, TypeError):
+            version = "Unknown"
         available_lora_models[name] = {
             "filename": filename,
-            "version": get_version_from_filename(metadata.get("ss_sd_model_name")),
+            "version": version,
         }
     return available_lora_models
 
@@ -815,6 +819,7 @@ def on_ui_tabs():
                 with open(
                     os.path.join(os.path.dirname(os.path.abspath(__file__)), "info.md"),
                     "r",
+                    encoding='utf-8',
                 ) as f:
                     trt_info = gr.Markdown(elem_id="trt_info", value=f.read())
 
